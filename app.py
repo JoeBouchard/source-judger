@@ -24,4 +24,5 @@ def process():
     page+='</ol>'
     return page#json.dumps({'text':toDisp})
 
-app.run(threaded=True, port=5000)
+if __name__ == '__main__':
+    app.run(threaded=True, port=5000)
