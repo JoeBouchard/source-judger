@@ -12,8 +12,10 @@ def parseText(text):
             cleanText += ' '
     tokens = re.split('\\s+?', cleanText)
     #print(tokens)
-    while '' in tokens:
-        tokens.remove('')
+    toRemove = ['', 'the', 'a', 'an', 'and', 'but', 'or']
+    for bad in toRemove:
+        while bad in tokens:
+            tokens.remove('')
     freqCounter = {'TOTAL':0}
     wordMatch = {'NONE':[]}
     print("Working...")
