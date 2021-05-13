@@ -18,7 +18,7 @@ def process():
         page+=str(i[1][0:5])+'\t'
         page+=str(i[0])
         page+="\tpercent match with\t"
-        #page+=str(i[2])
+        page+=str(i[2])
         page+="\tdistinct words</li>"
         #print(page)
     page+='</ol>'
