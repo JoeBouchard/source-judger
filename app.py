@@ -24,4 +24,4 @@ def process():
     page+='</ol>'
     return page#json.dumps({'text':toDisp})
 
-app.run(threaded=True, port=80)
+app.run(threaded=True, port=5000)
