@@ -15,7 +15,7 @@ def parseText(text):
     toRemove = ['', 'the', 'a', 'an', 'and', 'but', 'or']
     for bad in toRemove:
         while bad in tokens:
-            tokens.remove('')
+            tokens.remove(bad)
     freqCounter = {'TOTAL':0}
     wordMatch = {'NONE':[]}
     print("Working...")
