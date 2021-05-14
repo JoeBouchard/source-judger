@@ -28,8 +28,12 @@ function handleParagraph(p){
 			data[lt] += 1;
 		}
 	}
+	const numKeys = Object.keys(data).length
 	//console.log(data);
-	document.getElementById('output').innerHTML = "Working... <br><b>DO NOT CLICK SUBMIT AGAIN</b> <br>It will slow down your results";
+	document.getElementById('output').innerHTML = "Working on "+numKeys+" distinct words... <br><b>DO NOT CLICK SUBMIT AGAIN</b> <br>It will slow down your results";
+	if (numKeys > 5000){
+		document.getElementById('output').innerHTML += "<br><br><br>You have a large number of unique words. This may omit some to avoid timing out. If the time is >29 seconds, some words were omitted from the analysis";
+	}
 	fetch("/freqData", {
 		method: "POST", 
 		body: JSON.stringify(data)
