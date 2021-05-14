@@ -3,7 +3,8 @@ import pandas as pd
 df = pd.read_csv("wordFreqs.csv")
 df.set_index('WORD', inplace=True)
 
-def parseText(text):
+def makeFreqs(text):
+    freqs = {}
     cleanText = ''
     for i in text:
         if i.isalnum() or i.isspace():
@@ -17,31 +18,46 @@ def parseText(text):
     for bad in toRemove:
         while bad in tokens:
             tokens.remove(bad)
-    freqCounter = {'TOTAL':0}
-    wordMatch = {'NONE':[]}
-    #print("Working...")
     for t in tokens:
         if t != 'I':
             t = t.lower()
-##        print(t)
+        if t not in freqs.keys():
+            freqs[t] = 0
+        freqs[t] += 1
+    return freqs
+
+def processFreqs(freqs):
+    ignore = ['', 'the', 'a', 'an', 'and', 'but', 'or']
+    ignore += ['of', 'for', 'from', 'by', 'with', 'in', 'out']
+    freqCounter = {'TOTAL':0}
+    wordMatch = {'NONE':[]}
+    tokens = list(freqs.keys())
+    #print(tokens)
+    for t in tokens:
+        found=True
+        #print(freqs[t])
+        if t != 'I':
+            t = t.lower()
         try:
-            freqs = df.loc[t]
-            found=True
+            vals = df.loc[t]
         except KeyError:
-            freqs = df.loc['a']
+            vals = df.loc['a']
             found=False
-        for f in freqs.keys():
-            if found:
+        if found:
+            for f in vals.keys():
                 if f not in freqCounter.keys():
+                    #print(f)
                     freqCounter[f] = 0
                     wordMatch[f] = []
-                freqCounter[f]+= 1 if freqs[f] > 0.6 else round(freqs[f], 3)
-                if freqs[f] > 0.75 and t not in wordMatch[f]:
+                #print(vals)
+                val = (1 if vals[f] > 0.6 else round(vals[f], 3))
+                scaledVal = val*freqs[t]
+                freqCounter[f] += scaledVal
+                if vals[f] > 0.75 and t not in wordMatch[f]:
                     wordMatch[f].append(t)
-            elif t not in wordMatch['NONE']:
-                wordMatch['NONE'].append(t)
-        if found:
-            freqCounter['TOTAL']+=1
+            freqCounter['TOTAL']+=1*freqs[t]
+        elif t not in wordMatch['NONE']:
+            wordMatch['NONE'].append(t)
     return freqCounter, wordMatch
 
 def percentMaker(freqs, words):

@@ -15,18 +15,20 @@ def updatorjs():
 @app.route('/data', methods=['POST'])
 def process():
     jdata = request.get_json(force=True)
-    #print(jdata)
     text = jdata['Input Text']
-    #freq1 = jdata['freqs']
-    #print(text)
-    freq2, words = driver.parseText(text)
-    #if len(freq1.keys()) > 2:
-    #    freq1 = combiner(freq1, freq2)
-    #else:
-    #    freq1 = freq2
+    freqs = driver.makeFreqs(text)
+    freq2, words = driver.processFreqs(freqs)
     toDisp = driver.percentMaker(freq2, words)
     page = listMaker(toDisp)
-    return json.dumps({'text':page, 'freqs':freq2})
+    return json.dumps({'text':page})#, 'freqs':freq2})
+
+@app.route('/freqData', methods=['POST'])
+def processFreqs():
+    jdata = request.get_json(force=True)
+    freq2, words = driver.processFreqs(jdata)
+    toDisp = driver.percentMaker(freq2, words)
+    page = listMaker(toDisp)
+    return json.dumps({'text':page})#, 'freqs':freq2})
 
 def combiner(freq1, freq2):
     for key in freq1.keys():
