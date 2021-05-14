@@ -9,7 +9,8 @@ def input():
 
 @app.route('/data', methods=['POST'])
 def process():
-    text = request.form['Input Text']
+    text = request.get_json(force=True)['Input Text']
+    print(text)
     freqs, words = driver.parseText(text)
     toDisp = driver.percentMaker(freqs, words)
     page = "<ol>"
@@ -22,7 +23,8 @@ def process():
         page+="\tdistinct words</li>"
         #print(page)
     page+='</ol>'
-    return page#json.dumps({'text':toDisp})
+    print(page)
+    return json.dumps({'text':page})
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)

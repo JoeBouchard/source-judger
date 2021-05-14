@@ -13,6 +13,7 @@ def parseText(text):
     tokens = re.split('\\s+?', cleanText)
     #print(tokens)
     toRemove = ['', 'the', 'a', 'an', 'and', 'but', 'or']
+    toRemove += ['of', 'for', 'from', 'by', 'with', 'in', 'out']
     for bad in toRemove:
         while bad in tokens:
             tokens.remove(bad)
