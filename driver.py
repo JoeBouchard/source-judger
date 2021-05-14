@@ -1,4 +1,4 @@
-import re
+import re, time
 import pandas as pd
 df = pd.read_csv("wordFreqs.csv")
 df.set_index('WORD', inplace=True)

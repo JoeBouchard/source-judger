@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import json
 import driver
+import time
 
 app = Flask(__name__)
 @app.route('/')
@@ -24,10 +25,11 @@ def process():
 
 @app.route('/freqData', methods=['POST'])
 def processFreqs():
+    startTime = time.time()
     jdata = request.get_json(force=True)
     freq2, words = driver.processFreqs(jdata)
     toDisp = driver.percentMaker(freq2, words)
-    page = listMaker(toDisp)
+    page = listMaker(toDisp, startTime)
     return json.dumps({'text':page})#, 'freqs':freq2})
 
 def combiner(freq1, freq2):
@@ -35,7 +37,7 @@ def combiner(freq1, freq2):
         freq1[key]+=freq2[key]
     return freq1
 
-def listMaker(toDisp):
+def listMaker(toDisp, startTime=0):
     links = {'Simple Wikipedia': 'simple.wikipedia.org',
              'Standard Wikipedia': 'en.wikipedia.org',
              'Fanfiction.net': 'fanfiction.net',
@@ -61,6 +63,9 @@ def listMaker(toDisp):
     #print(page)
     if page == '<ol></ol>':
         page = "<b>No Valid Words Given</b>"
+    if startTime != 0:
+        passed = str(round(time.time()-startTime, 3))
+        page += "This took "+passed+" seconds."
     return page#json.dumps({'text':page})
 
 if __name__ == '__main__':
