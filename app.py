@@ -7,17 +7,38 @@ app = Flask(__name__)
 def input():
     return render_template('input.html')
 
+@app.route('/updator.js')
+def updatorjs():
+    with open("templates/updator.js") as f:
+        return f.read()
+    
 @app.route('/data', methods=['POST'])
 def process():
+    jdata = request.get_json(force=True)
+    #print(jdata)
+    text = jdata['Input Text']
+    #freq1 = jdata['freqs']
+    #print(text)
+    freq2, words = driver.parseText(text)
+    #if len(freq1.keys()) > 2:
+    #    freq1 = combiner(freq1, freq2)
+    #else:
+    #    freq1 = freq2
+    toDisp = driver.percentMaker(freq2, words)
+    page = listMaker(toDisp)
+    return json.dumps({'text':page, 'freqs':freq2})
+
+def combiner(freq1, freq2):
+    for key in freq1.keys():
+        freq1[key]+=freq2[key]
+    return freq1
+
+def listMaker(toDisp):
     links = {'Simple Wikipedia': 'simple.wikipedia.org',
              'Standard Wikipedia': 'en.wikipedia.org',
              'Fanfiction.net': 'fanfiction.net',
              'GroupMe': 'groupme.com'
              }
-    text = request.get_json(force=True)['Input Text']
-    print(text)
-    freqs, words = driver.parseText(text)
-    toDisp = driver.percentMaker(freqs, words)
     page = "<ol>"
     for i in toDisp:
         page+='<li>'
@@ -35,10 +56,10 @@ def process():
         page+="\tdistinct words</li>"
         #print(page)
     page+='</ol>'
-    print(page)
+    #print(page)
     if page == '<ol></ol>':
         page = "<b>No Valid Words Given</b>"
-    return json.dumps({'text':page})
+    return page#json.dumps({'text':page})
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)

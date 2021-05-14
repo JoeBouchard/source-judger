@@ -19,7 +19,7 @@ def parseText(text):
             tokens.remove(bad)
     freqCounter = {'TOTAL':0}
     wordMatch = {'NONE':[]}
-    print("Working...")
+    #print("Working...")
     for t in tokens:
         if t != 'I':
             t = t.lower()
@@ -54,8 +54,8 @@ def percentMaker(freqs, words):
             toDisp.append((rounded, key, len(words[key])))
     toDisp.sort(reverse=True)
     
-    for i in toDisp:
-        print(i[1][0:5], i[0], "percent match with", i[2], 'distinct words', sep='\t')
+    #for i in toDisp:
+    #    print(i[1][0:5], i[0], "percent match with", i[2], 'distinct words', sep='\t')
     return toDisp
 
 def main():
