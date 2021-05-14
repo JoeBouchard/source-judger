@@ -1,26 +1,9 @@
 <html>
-<head>
-Source Judger
-</head>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<title>Source Judger</title>
 <body>
 <p>Enter text here...</p>
-<script type="text/javascript">
-function process() {
-	var rawText = document.getElementById('Input Text').value;
-	document.getElementById('output').innerHTML = "Working...";
-	let data = {"Input Text": rawText};
-
-	fetch("/data", {
-		method: "POST", 
-		body: JSON.stringify(data)
-	}).then(res => res.json())
-	.then(data => obj = data)
-	.then(() => writeOut(obj['text']));
-}
-function writeOut(data){
-document.getElementById('output').innerHTML = data;
-}
-</script>
+<script src="/updator.js"></script>
     <textarea rows = "20" cols = "60" id="Input Text" overflow-y: scroll></textarea><br>
     <p><input type = "button" onclick='process()' value = "submit" /></p>
 </form>
