@@ -28,6 +28,8 @@ def makeFreqs(text):
 
 def processFreqs(freqs):
     start = time.time()
+    freqs = dict(sorted(freqs.items(), key=lambda item: item[1], reverse=True))
+    print("Time to sort: ", time.time()-start)
     ignore = ['', 'the', 'a', 'an', 'and', 'but', 'or']
     ignore += ['of', 'for', 'from', 'by', 'with', 'in', 'out']
     freqCounter = {'TOTAL':0}
