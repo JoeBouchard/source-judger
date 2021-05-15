@@ -67,14 +67,24 @@ def processFreqs(freqs):
     return freqCounter, wordMatch
 
 def percentMaker(freqs, words):
-    toDisp = []
+    toDisp = {}
+    links = {'Simple Wikipedia': 'www.simple.wikipedia.org',
+             'Standard Wikipedia': 'www.en.wikipedia.org',
+             'Fanfiction.net': 'www.fanfiction.net',
+             'GroupMe': 'www.groupme.com'
+             }
     for key in freqs.keys():
         if key != 'TOTAL':
+            if "r/" in key:
+                link ="www.reddit.com/"+key#+" target=\"_blank\">"
+            else:
+                link =links[key]#+" target=\"_blank\">"
             ratio = freqs[key]/freqs['TOTAL']
             percent = ratio*100
             rounded = round(percent, 3)
-            toDisp.append((rounded, key, len(words[key])))
-    toDisp.sort(reverse=True)
+            toDisp[key] = (rounded, len(words[key]), link)
+    toDisp = dict(sorted(toDisp.items(), key=lambda item: item[1], reverse=True))
+
     
     #for i in toDisp:
     #    print(i[1][0:5], i[0], "percent match with", i[2], 'distinct words', sep='\t')

@@ -29,8 +29,10 @@ def processFreqs():
     jdata = request.get_json(force=True)
     freq2, words = driver.processFreqs(jdata)
     toDisp = driver.percentMaker(freq2, words)
-    page = listMaker(toDisp, startTime)
-    return json.dumps({'text':page})#, 'freqs':freq2})
+    toDisp['TIME'] = (round(time.time()-startTime))
+    print(toDisp)
+    #page = listMaker(toDisp, startTime)
+    return json.dumps(toDisp)#, 'freqs':freq2})
 
 def combiner(freq1, freq2):
     for key in freq1.keys():
@@ -38,19 +40,19 @@ def combiner(freq1, freq2):
     return freq1
 
 def listMaker(toDisp, startTime=0):
-    links = {'Simple Wikipedia': 'simple.wikipedia.org',
-             'Standard Wikipedia': 'en.wikipedia.org',
-             'Fanfiction.net': 'fanfiction.net',
-             'GroupMe': 'groupme.com'
+    links = {'Simple Wikipedia': 'www.simple.wikipedia.org',
+             'Standard Wikipedia': 'www.en.wikipedia.org',
+             'Fanfiction.net': 'www.fanfiction.net',
+             'GroupMe': 'www.groupme.com'
              }
     page = "<ol>"
     for i in toDisp:
         page+='<li>'
         page += "<a href=https://"
         if "r/" in i[1]:
-            page+="www.reddit.com/"+i[1]+" target=\"_blank\">"
+            page+="www.reddit.com/"#+i[1]+" target=\"_blank\">"
         else:
-            page+=links[i[1]]+" target=\"_blank\">"
+            page+=links[i[1]]#+" target=\"_blank\">"
         page+=str(i[1])
         page += "</a>"
         page+='\t'
