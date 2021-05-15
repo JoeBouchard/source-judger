@@ -1,13 +1,17 @@
 <html>
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 <title>Source Judger</title>
 <body>
-<p>Enter text here...</p>
-<script src="/updator.js"></script>
-    <textarea rows = "20" cols = "60" id="Input Text" overflow-y: scroll></textarea><br>
-    <p><input type = "button" onclick='process()' value = "submit" /></p>
-</form>
-<p id="output">
-</p>
+<script  type="text/javascript" src="{{ url_for('static', filename='updator.js') }}"></script>
+<div id=wrapper>
+<div id=input>
+<label for "Input_Text">Enter text here...</label>
+<textarea id="Input_Text"></textarea><br>
+<div><button onclick="process()">Submit</button></div>
+</div>
+<div id="output">
+</div>
+</div>
 </body>
 </html>
