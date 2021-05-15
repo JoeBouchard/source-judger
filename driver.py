@@ -68,17 +68,18 @@ def processFreqs(freqs):
 
 def percentMaker(freqs, words):
     toDisp = {}
-    links = {'Simple Wikipedia': 'www.simple.wikipedia.org',
-             'Standard Wikipedia': 'www.en.wikipedia.org',
+    links = {'Simple Wikipedia': 'simple.wikipedia.org',
+             'Standard Wikipedia': 'en.wikipedia.org',
              'Fanfiction.net': 'www.fanfiction.net',
              'GroupMe': 'www.groupme.com'
              }
     for key in freqs.keys():
         if key != 'TOTAL':
+            link="https://"
             if "r/" in key:
-                link ="www.reddit.com/"+key#+" target=\"_blank\">"
+                link +="www.reddit.com/"+key#+" target=\"_blank\">"
             else:
-                link =links[key]#+" target=\"_blank\">"
+                link +=links[key]#+" target=\"_blank\">"
             ratio = freqs[key]/freqs['TOTAL']
             percent = ratio*100
             rounded = round(percent, 3)
