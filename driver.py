@@ -1,7 +1,9 @@
 import re, time
 import pandas as pd
+from nltk.tag import pos_tag
 df = pd.read_csv("wordFreqs.csv")
 df.set_index('WORD', inplace=True)
+
 
 def makeFreqs(text):
     freqs = {}
@@ -42,12 +44,24 @@ def processFreqs(freqs):
         found=True
         #print(freqs[t])
         if t not in ignore:
-            if t != 'I':
-                t = t.lower()
-            try:
-                vals = df.loc[t]
-            except KeyError:
-                vals = df.loc['a']
+            tag = "V"
+            t2 = t
+            if not t.islower():
+                tag = pos_tag([t])
+                if t != 'I' and "NNP" not in tag[0]:
+                    t2 = t.lower()
+                    #print(t2, "is not a proper noun", tag[0])
+                    if t2 in ignore:
+                        found=False
+                else:
+                    print(t, tag)
+            if "NNP" not in tag[0]:
+                try:
+                    vals = df.loc[t2]
+                except KeyError:
+                    vals = df.loc['a']
+                    found=False
+            else:
                 found=False
             if found:
                 for f in vals.keys():
@@ -59,11 +73,11 @@ def processFreqs(freqs):
                     val = (1 if vals[f] > 0.6 else round(vals[f], 3))
                     scaledVal = val*freqs[t]
                     freqCounter[f] += scaledVal
-                    if vals[f] > 0.75 and t not in wordMatch[f]:
-                        wordMatch[f].append(t)
+                    if vals[f] > 0.75 and t2 not in wordMatch[f]:
+                        wordMatch[f].append(t2)
                 freqCounter['TOTAL']+=1*freqs[t]
             elif t not in wordMatch['NONE']:
-                wordMatch['NONE'].append(t)
+                wordMatch['NONE'].append(t2)
     return freqCounter, wordMatch
 
 def percentMaker(freqs, words):

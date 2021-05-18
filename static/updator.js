@@ -1,4 +1,4 @@
-const notAlNumDashSpace = /[^a-zA-Z\-\s]/ig;
+const notAlNumDashSpace = /[^a-zA-Z\s]/ig;
 
 function process() {
 	var rawText = document.getElementById('Input_Text').value;
@@ -11,11 +11,14 @@ function process() {
 function handleParagraph(p){
 	let data = {};
 	
-	var processed = p.replaceAll(notAlNumDashSpace, '')
+	const propn = document.getElementById('names').checked;
+	console.log(propn);
+	
+	var processed = p.replaceAll(notAlNumDashSpace, ' ')
 	//console.log(processed);
 	var toks = processed.split(/\s/);
 	for (t of toks){
-		if (t != "I"){
+		if (t != "I" && propn){
 			lt = t.toLowerCase();
 		} else {
 			lt = t;
