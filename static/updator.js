@@ -18,7 +18,7 @@ function handleParagraph(p){
 	//console.log(processed);
 	var toks = processed.split(/\s/);
 	for (t of toks){
-		if (t != "I" && propn){
+		if (t != "I" && !propn){
 			lt = t.toLowerCase();
 		} else {
 			lt = t;
