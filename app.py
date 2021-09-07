@@ -1,18 +1,21 @@
 from flask import Flask, request, render_template
 import json
-import driver
+from lib import driver
 import time
 
 app = Flask(__name__)
+
+
 @app.route('/')
 def input():
     return render_template('input.html')
 
-@app.route('/updator.js')
-def updatorjs():
-    with open("templates/updator.js") as f:
-        return f.read()
-    
+# @app.route('/updator.js')
+# def updatorjs():
+#     with open("templates/updator.js") as f:
+#         return f.read()
+
+
 @app.route('/data', methods=['POST'])
 def process():
     jdata = request.get_json(force=True)
@@ -21,7 +24,8 @@ def process():
     freq2, words = driver.processFreqs(freqs)
     toDisp = driver.percentMaker(freq2, words)
     page = listMaker(toDisp)
-    return json.dumps({'text':page})#, 'freqs':freq2})
+    return json.dumps({'text': page})  # , 'freqs':freq2})
+
 
 @app.route('/freqData', methods=['POST'])
 def processFreqs():
@@ -32,12 +36,14 @@ def processFreqs():
     toDisp['TIME'] = (round(time.time()-startTime))
     print(toDisp)
     #page = listMaker(toDisp, startTime)
-    return json.dumps(toDisp)#, 'freqs':freq2})
+    return json.dumps(toDisp)  # , 'freqs':freq2})
+
 
 def combiner(freq1, freq2):
     for key in freq1.keys():
-        freq1[key]+=freq2[key]
+        freq1[key] += freq2[key]
     return freq1
+
 
 def listMaker(toDisp, startTime=0):
     links = {'Simple Wikipedia': 'www.simple.wikipedia.org',
@@ -47,28 +53,29 @@ def listMaker(toDisp, startTime=0):
              }
     page = "<ol>"
     for i in toDisp:
-        page+='<li>'
+        page += '<li>'
         page += "<a href=https://"
         if "r/" in i[1]:
-            page+="www.reddit.com/"#+i[1]+" target=\"_blank\">"
+            page += "www.reddit.com/"  # +i[1]+" target=\"_blank\">"
         else:
-            page+=links[i[1]]#+" target=\"_blank\">"
-        page+=str(i[1])
+            page += links[i[1]]  # +" target=\"_blank\">"
+        page += str(i[1])
         page += "</a>"
-        page+='\t'
-        page+=str(i[0])
-        page+="\tpercent match with\t"
-        page+=str(i[2])
-        page+="\tdistinct words</li>"
-        #print(page)
-    page+='</ol>'
-    #print(page)
+        page += '\t'
+        page += str(i[0])
+        page += "\tpercent match with\t"
+        page += str(i[2])
+        page += "\tdistinct words</li>"
+        # print(page)
+    page += '</ol>'
+    # print(page)
     if page == '<ol></ol>':
         page = "<b>No Valid Words Given</b>"
     if startTime != 0:
         passed = str(round(time.time()-startTime, 3))
         page += "This took "+passed+" seconds."
-    return page#json.dumps({'text':page})
+    return page  # json.dumps({'text':page})
+
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)

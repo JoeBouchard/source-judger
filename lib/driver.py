@@ -105,21 +105,21 @@ def percentMaker(freqs, words):
     #    print(i[1][0:5], i[0], "percent match with", i[2], 'distinct words', sep='\t')
     return toDisp
 
-def main():
-    while True:
-        text = ''
-        print("Input your text:\n")
-        while True:
-            line=input()
-            if line:
-                twoSpaces = False
-                text+=' '+line
-            else:
-                if twoSpaces:
-                    break
-                twoSpaces = True
-        freqs, words = parseText(text)
-        percentMaker(freqs, words)
+# def main():
+#     while True:
+#         text = ''
+#         print("Input your text:\n")
+#         while True:
+#             line=input()
+#             if line:
+#                 twoSpaces = False
+#                 text+=' '+line
+#             else:
+#                 if twoSpaces:
+#                     break
+#                 twoSpaces = True
+#         freqs, words = parseText(text)
+#         percentMaker(freqs, words)
 ##        for i in words.keys():
 ##            print(i, words[i])
 ##            print('\n\n\n')

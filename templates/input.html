@@ -1,19 +1,24 @@
 <html>
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/@ag-grid-community/all-modules@26.0.0/dist/styles/ag-grid.css" />
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/@ag-grid-community/all-modules@26.0.0/dist/styles/ag-theme-alpine.css" />
+
 <title>Source Judger</title>
+
 <body>
-<script  type="text/javascript" src="{{ url_for('static', filename='updator.js') }}"></script>
-<div id=wrapper>
-<div id=input>
-<label for "Input_Text">Enter text here...</label>
-<textarea id="Input_Text"></textarea><br>
-<input type="checkbox" id="names", name="names", value="True">
-<label for="names"> Exclude Proper Nouns? (beta)</label><br>
-<div><button onclick="process()">Submit</button></div>
+<!-- <script  type="text/javascript" src="{{ url_for('static', filename='scripts/updator.js') }}"></script> -->
+
+<div id="input-container">
+
 </div>
-<div id="output">
-</div>
-</div>
+
+<script  type="text/javascript" src="{{ url_for('static', filename='scripts/min.js') }}"></script>
+
 </body>
 </html>
